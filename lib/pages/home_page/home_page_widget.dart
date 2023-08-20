@@ -264,6 +264,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             <FFUploadedFile>[];
 
                                         try {
+                                          showUploadMessage(
+                                            context,
+                                            'Uploading file...',
+                                            showLoading: true,
+                                          );
                                           selectedUploadedFiles = selectedFiles
                                               .map((m) => FFUploadedFile(
                                                     name: m.storagePath
@@ -273,6 +278,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   ))
                                               .toList();
                                         } finally {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
                                           _model.isDataUploading = false;
                                         }
                                         if (selectedUploadedFiles.length ==
@@ -281,8 +288,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             _model.uploadedLocalFile =
                                                 selectedUploadedFiles.first;
                                           });
+                                          showUploadMessage(
+                                            context,
+                                            'Success!',
+                                          );
                                         } else {
                                           setState(() {});
+                                          showUploadMessage(
+                                            context,
+                                            'Failed to upload file',
+                                          );
                                           return;
                                         }
                                       }
