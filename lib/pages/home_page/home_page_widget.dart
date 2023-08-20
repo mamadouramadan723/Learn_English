@@ -1,4 +1,4 @@
-import '/backend/api_requests/api_calls.dart';
+import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_audio_player.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -254,7 +254,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .stop();
                                       }
                                       final selectedFiles = await selectFiles(
-                                        allowedExtensions: ['mp3'],
+                                        allowedExtensions: ['pdf'],
                                         multiFile: false,
                                       );
                                       if (selectedFiles != null) {
@@ -263,12 +263,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         var selectedUploadedFiles =
                                             <FFUploadedFile>[];
 
+                                        var downloadUrls = <String>[];
                                         try {
-                                          showUploadMessage(
-                                            context,
-                                            'Uploading file...',
-                                            showLoading: true,
-                                          );
                                           selectedUploadedFiles = selectedFiles
                                               .map((m) => FFUploadedFile(
                                                     name: m.storagePath
@@ -277,27 +273,31 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     bytes: m.bytes,
                                                   ))
                                               .toList();
+
+                                          downloadUrls = (await Future.wait(
+                                            selectedFiles.map(
+                                              (f) async => await uploadData(
+                                                  f.storagePath, f.bytes),
+                                            ),
+                                          ))
+                                              .where((u) => u != null)
+                                              .map((u) => u!)
+                                              .toList();
                                         } finally {
-                                          ScaffoldMessenger.of(context)
-                                              .hideCurrentSnackBar();
                                           _model.isDataUploading = false;
                                         }
                                         if (selectedUploadedFiles.length ==
-                                            selectedFiles.length) {
+                                                selectedFiles.length &&
+                                            downloadUrls.length ==
+                                                selectedFiles.length) {
                                           setState(() {
                                             _model.uploadedLocalFile =
                                                 selectedUploadedFiles.first;
+                                            _model.uploadedFileUrl =
+                                                downloadUrls.first;
                                           });
-                                          showUploadMessage(
-                                            context,
-                                            'Success!',
-                                          );
                                         } else {
                                           setState(() {});
-                                          showUploadMessage(
-                                            context,
-                                            'Failed to upload file',
-                                          );
                                           return;
                                         }
                                       }
@@ -306,7 +306,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'file : ${_model.uploadedLocalFile.blurHash}',
+                                            'file : ${_model.uploadedFileUrl}',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -320,33 +320,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   .secondary,
                                         ),
                                       );
-                                      _model.apiResultowq =
-                                          await SpeechAPIGroup.test1Call.call(
-                                        audio: _model.uploadedLocalFile,
-                                      );
-                                      if ((_model.apiResultowq?.succeeded ??
-                                          true)) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              (_model.apiResultowq?.jsonBody ??
-                                                      '')
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                      }
 
                                       setState(() {});
                                     },
@@ -409,7 +382,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: AutoSizeText(
-                            'Hearder :   ${(_model.apiResultowq?.getHeader('Hearder') ?? '')} Body : ${(_model.apiResultowq?.bodyText ?? '')} Status :  ${(_model.apiResultowq?.statusCode ?? 200).toString()}',
+                            'Hearder :   ${_model.uploadedFileUrl} Body : ',
                             style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
