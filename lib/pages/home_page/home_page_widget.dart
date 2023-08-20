@@ -287,6 +287,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         }
                                       }
 
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'file : ${_model.uploadedLocalFile.blurHash}',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
                                       _model.apiResultowq =
                                           await SpeechAPIGroup.test1Call.call(
                                         audio: _model.uploadedLocalFile,
