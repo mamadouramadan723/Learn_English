@@ -26,8 +26,6 @@ class Test1Call {
     String? contentType = 'audio/wav',
     String? audio = '',
   }) {
-    final body = '''
-''';
     return ApiManager.instance.makeApiCall(
       callName: 'Test 1',
       apiUrl:
@@ -39,9 +37,10 @@ class Test1Call {
         'Granularity': '${granularity}',
         'content-type': 'audio/wav',
       },
-      params: {},
-      body: body,
-      bodyType: BodyType.TEXT,
+      params: {
+        'audio': audio,
+      },
+      bodyType: BodyType.MULTIPART,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
