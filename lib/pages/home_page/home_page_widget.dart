@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_audio_player.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/flutter_flow/permissions_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -236,7 +237,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               onPressed: !_model.isRecording
                                   ? null
                                   : () async {
-                                      _model.recording =
+                                      _model.recordingAudio =
                                           await _model.audioRecorder?.stop();
                                       setState(() {
                                         _model.isRecording = false;
@@ -249,6 +250,39 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 'rowOnActionTriggerAnimation']!
                                             .controller
                                             .stop();
+                                      }
+                                      final selectedFiles = await selectFiles(
+                                        allowedExtensions: ['mp3'],
+                                        multiFile: false,
+                                      );
+                                      if (selectedFiles != null) {
+                                        setState(() =>
+                                            _model.isDataUploading = true);
+                                        var selectedUploadedFiles =
+                                            <FFUploadedFile>[];
+
+                                        try {
+                                          selectedUploadedFiles = selectedFiles
+                                              .map((m) => FFUploadedFile(
+                                                    name: m.storagePath
+                                                        .split('/')
+                                                        .last,
+                                                    bytes: m.bytes,
+                                                  ))
+                                              .toList();
+                                        } finally {
+                                          _model.isDataUploading = false;
+                                        }
+                                        if (selectedUploadedFiles.length ==
+                                            selectedFiles.length) {
+                                          setState(() {
+                                            _model.uploadedLocalFile =
+                                                selectedUploadedFiles.first;
+                                          });
+                                        } else {
+                                          setState(() {});
+                                          return;
+                                        }
                                       }
 
                                       setState(() {});
@@ -285,9 +319,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               0.0, 30.0, 0.0, 0.0),
                           child: FlutterFlowAudioPlayer(
                             audio: Audio.network(
-                              _model.recording!,
+                              _model.recordingAudio!,
                               metas: Metas(
-                                id: 'sample3.mp3-60c6ba1a',
+                                id: '2vqf7_-60c6ba1a',
+                                title: 'Recorded Audio',
                               ),
                             ),
                             titleTextStyle:
