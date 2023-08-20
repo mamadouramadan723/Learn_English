@@ -347,10 +347,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: Text(
-                            valueOrDefault<String>(
-                              (_model.apiResultowq?.jsonBody ?? '').toString(),
-                              'Result :',
-                            ),
+                            'My Result : ${(_model.apiResultowq?.getHeader('re') ?? '')}',
                             style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
