@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/permissions_util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -345,8 +346,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
-                          child: Text(
-                            'My Result :     Hearder :   ${(_model.apiResultowq?.jsonBody ?? '').toString()}Body 1${(_model.apiResultowq?.bodyText ?? '')}Status :  ${(_model.apiResultowq?.statusCode ?? 200).toString()}',
+                          child: AutoSizeText(
+                            'Hearder :   ${(_model.apiResultowq?.getHeader('Hearder') ?? '')} Body : ${(_model.apiResultowq?.bodyText ?? '')} Status :  ${(_model.apiResultowq?.statusCode ?? 200).toString()}',
                             style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
