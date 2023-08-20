@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_audio_player.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/flutter_flow/permissions_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +68,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
@@ -240,15 +239,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               onPressed: !_model.isRecording
                                   ? null
                                   : () async {
-                                      _model.recordingAudio =
+                                      _model.recordedAudio =
                                           await _model.audioRecorder?.stop();
                                       setState(() {
                                         _model.isRecording = false;
                                         _model.isShowPlayer = true;
-                                      });
-                                      setState(() {
-                                        FFAppState().recordedaudio =
-                                            _model.recordingAudio!;
                                       });
                                       if (animationsMap[
                                               'rowOnActionTriggerAnimation'] !=
@@ -258,9 +253,43 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .controller
                                             .stop();
                                       }
+                                      final selectedFiles = await selectFiles(
+                                        allowedExtensions: ['mp3'],
+                                        multiFile: false,
+                                      );
+                                      if (selectedFiles != null) {
+                                        setState(() =>
+                                            _model.isDataUploading = true);
+                                        var selectedUploadedFiles =
+                                            <FFUploadedFile>[];
+
+                                        try {
+                                          selectedUploadedFiles = selectedFiles
+                                              .map((m) => FFUploadedFile(
+                                                    name: m.storagePath
+                                                        .split('/')
+                                                        .last,
+                                                    bytes: m.bytes,
+                                                  ))
+                                              .toList();
+                                        } finally {
+                                          _model.isDataUploading = false;
+                                        }
+                                        if (selectedUploadedFiles.length ==
+                                            selectedFiles.length) {
+                                          setState(() {
+                                            _model.uploadedLocalFile =
+                                                selectedUploadedFiles.first;
+                                          });
+                                        } else {
+                                          setState(() {});
+                                          return;
+                                        }
+                                      }
+
                                       _model.apiResultowq =
                                           await SpeechAPIGroup.test1Call.call(
-                                        audio: _model.recordingAudio,
+                                        audio: _model.uploadedLocalFile,
                                       );
                                       if ((_model.apiResultowq?.succeeded ??
                                           true)) {
@@ -320,7 +349,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               0.0, 30.0, 0.0, 0.0),
                           child: FlutterFlowAudioPlayer(
                             audio: Audio.network(
-                              _model.recordingAudio!,
+                              _model.recordedAudio!,
                               metas: Metas(
                                 id: '2vqf7_-60c6ba1a',
                                 title: 'Recorded Audio',
