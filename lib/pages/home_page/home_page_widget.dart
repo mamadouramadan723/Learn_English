@@ -259,8 +259,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       }
                                       _model.apiResultowq =
                                           await SpeechAPIGroup.test1Call.call(
-                                        pronunciationAssessment:
-                                            'ewogICJSZWZlcmVuY2VUZXh0IjogIkhvdyBkbyBJIHJ1biB0aGlzIHByb2dyYW0iLAogICJHcmFkaW5nU3lzdGVtIjogIkh1bmRyZWRNYXJrIiwKICAiRGltZW5zaW9uIjogIkNvbXByZWhlbnNpdmUiCn0=',
                                         audio: _model.recordingAudio,
                                       );
                                       if ((_model.apiResultowq?.succeeded ??

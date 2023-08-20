@@ -20,11 +20,14 @@ class SpeechAPIGroup {
 class Test1Call {
   Future<ApiCallResponse> call({
     String? pronunciationAssessment = '',
-    String? granularity = 'Word',
-    String? language = 'en-US',
-    String? format = 'detailed',
+    String? granularity = '',
+    String? language = '',
+    String? format = '',
+    String? contentType = 'audio/wav',
     String? audio = '',
   }) {
+    final body = '''
+''';
     return ApiManager.instance.makeApiCall(
       callName: 'Test 1',
       apiUrl:
@@ -34,12 +37,11 @@ class Test1Call {
         ...SpeechAPIGroup.headers,
         'Pronunciation-Assessment': '${pronunciationAssessment}',
         'Granularity': '${granularity}',
-        'Ocp-Apim-Subscription-Key': '0e415183127541a48763789785c3dbe4',
+        'content-type': 'audio/wav',
       },
-      params: {
-        'audio': audio,
-      },
-      bodyType: BodyType.MULTIPART,
+      params: {},
+      body: body,
+      bodyType: BodyType.TEXT,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
