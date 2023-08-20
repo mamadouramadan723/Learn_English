@@ -341,6 +341,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 PlayInBackground.disabledRestoreOnForeground,
                           ),
                         ),
+                      Align(
+                        alignment: AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 10.0, 0.0, 0.0),
+                          child: Text(
+                            (_model.apiResultowq?.jsonBody ?? '').toString(),
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
