@@ -19,7 +19,8 @@ class SpeechAPIGroup {
 
 class Test1Call {
   Future<ApiCallResponse> call({
-    String? pronunciationAssessment = '',
+    String? pronunciationAssessment =
+        'ewogICJSZWZlcmVuY2VUZXh0IjogIkhvdyBkbyBJIHJ1biB0aGlzIHByb2dyYW0iLAogICJHcmFkaW5nU3lzdGVtIjogIkh1bmRyZWRNYXJrIiwKICAiRGltZW5zaW9uIjogIkNvbXByZWhlbnNpdmUiCn0=',
     String? granularity = '',
     String? language = '',
     String? format = '',
@@ -36,6 +37,7 @@ class Test1Call {
         'Pronunciation-Assessment': '${pronunciationAssessment}',
         'Granularity': '${granularity}',
         'content-type': 'audio/wav',
+        'Ocp-Apim-Subscription-Key': '0e415183127541a48763789785c3dbe4',
       },
       params: {
         'audio': audio,
