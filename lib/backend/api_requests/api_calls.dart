@@ -23,9 +23,8 @@ class Test1Call {
     String? granularity = 'Word',
     String? language = 'en-US',
     String? format = 'detailed',
+    String? audio = '',
   }) {
-    final body = '''
-''';
     return ApiManager.instance.makeApiCall(
       callName: 'Test 1',
       apiUrl:
@@ -37,9 +36,10 @@ class Test1Call {
         'Granularity': '${granularity}',
         'Ocp-Apim-Subscription-Key': '0e415183127541a48763789785c3dbe4',
       },
-      params: {},
-      body: body,
-      bodyType: BodyType.TEXT,
+      params: {
+        'audio': audio,
+      },
+      bodyType: BodyType.MULTIPART,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
