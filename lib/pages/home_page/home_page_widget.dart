@@ -254,7 +254,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .stop();
                                       }
                                       final selectedFiles = await selectFiles(
-                                        allowedExtensions: ['mp3'],
+                                        allowedExtensions: ['pdf'],
                                         multiFile: false,
                                       );
                                       if (selectedFiles != null) {
