@@ -24,8 +24,10 @@ class Test1Call {
     String? granularity = '',
     String? language = '',
     String? format = '',
-    String? contentType = 'audio/wav',
-    String? audio = '',
+    String? contentType = 'audio/wav; codecs=audio/pcm; samplerate=16000',
+    FFUploadedFile? audio,
+    String? accept = 'application/json',
+    String? ocpApimSubscriptionKey = '0e415183127541a48763789785c3dbe4',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Test 1',
@@ -36,8 +38,8 @@ class Test1Call {
         ...SpeechAPIGroup.headers,
         'Pronunciation-Assessment': '${pronunciationAssessment}',
         'Granularity': '${granularity}',
-        'content-type': 'audio/wav',
-        'Ocp-Apim-Subscription-Key': '0e415183127541a48763789785c3dbe4',
+        'content-type': '${contentType}',
+        'Ocp-Apim-Subscription-Key': '${ocpApimSubscriptionKey}',
       },
       params: {
         'audio': audio,

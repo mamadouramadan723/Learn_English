@@ -1,5 +1,4 @@
 import '/backend/api_requests/api_calls.dart';
-import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_audio_player.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -264,7 +263,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         var selectedUploadedFiles =
                                             <FFUploadedFile>[];
 
-                                        var downloadUrls = <String>[];
                                         try {
                                           showUploadMessage(
                                             context,
@@ -279,30 +277,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     bytes: m.bytes,
                                                   ))
                                               .toList();
-
-                                          downloadUrls = (await Future.wait(
-                                            selectedFiles.map(
-                                              (f) async => await uploadData(
-                                                  f.storagePath, f.bytes),
-                                            ),
-                                          ))
-                                              .where((u) => u != null)
-                                              .map((u) => u!)
-                                              .toList();
                                         } finally {
                                           ScaffoldMessenger.of(context)
                                               .hideCurrentSnackBar();
                                           _model.isDataUploading = false;
                                         }
                                         if (selectedUploadedFiles.length ==
-                                                selectedFiles.length &&
-                                            downloadUrls.length ==
-                                                selectedFiles.length) {
+                                            selectedFiles.length) {
                                           setState(() {
                                             _model.uploadedLocalFile =
                                                 selectedUploadedFiles.first;
-                                            _model.uploadedFileUrl =
-                                                downloadUrls.first;
                                           });
                                           showUploadMessage(
                                             context,
@@ -322,7 +306,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'file : ${_model.uploadedFileUrl}',
+                                            'file : ${_model.uploadedLocalFile.blurHash}',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -338,7 +322,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       );
                                       _model.apiResultp1y =
                                           await SpeechAPIGroup.test1Call.call(
-                                        audio: _model.uploadedFileUrl,
+                                        audio: _model.uploadedLocalFile,
                                       );
                                       if ((_model.apiResultp1y?.succeeded ??
                                           true)) {
@@ -423,7 +407,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: AutoSizeText(
-                            'Url :   ${_model.uploadedFileUrl} Body : ${(_model.apiResultp1y?.jsonBody ?? '').toString()} status : ${(_model.apiResultp1y?.statusCode ?? 200).toString()}',
+                            'File Bytes :   ${_model.uploadedLocalFile.blurHash} Body : ${(_model.apiResultp1y?.jsonBody ?? '').toString()} status : ${(_model.apiResultp1y?.statusCode ?? 200).toString()}',
                             style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
