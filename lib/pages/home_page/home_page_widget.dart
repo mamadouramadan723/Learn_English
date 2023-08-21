@@ -254,7 +254,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .stop();
                                       }
                                       final selectedFiles = await selectFiles(
-                                        allowedExtensions: ['pdf'],
+                                        allowedExtensions: ['mp3'],
                                         multiFile: false,
                                       );
                                       if (selectedFiles != null) {
@@ -265,6 +265,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
                                         var downloadUrls = <String>[];
                                         try {
+                                          showUploadMessage(
+                                            context,
+                                            'Uploading file...',
+                                            showLoading: true,
+                                          );
                                           selectedUploadedFiles = selectedFiles
                                               .map((m) => FFUploadedFile(
                                                     name: m.storagePath
@@ -284,6 +289,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               .map((u) => u!)
                                               .toList();
                                         } finally {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
                                           _model.isDataUploading = false;
                                         }
                                         if (selectedUploadedFiles.length ==
@@ -296,8 +303,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             _model.uploadedFileUrl =
                                                 downloadUrls.first;
                                           });
+                                          showUploadMessage(
+                                            context,
+                                            'Success!',
+                                          );
                                         } else {
                                           setState(() {});
+                                          showUploadMessage(
+                                            context,
+                                            'Failed to upload file',
+                                          );
                                           return;
                                         }
                                       }
