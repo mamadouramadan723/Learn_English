@@ -423,7 +423,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 10.0, 0.0, 0.0),
                           child: AutoSizeText(
-                            'Url :   ${_model.uploadedFileUrl} Body : ${(_model.apiResultp1y?.jsonBody ?? '').toString()}',
+                            'Url :   ${_model.uploadedFileUrl} Body : ${(_model.apiResultp1y?.jsonBody ?? '').toString()} status : ${(_model.apiResultp1y?.statusCode ?? 200).toString()}',
                             style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
