@@ -25,7 +25,7 @@ class Test1Call {
     String? language = '',
     String? format = '',
     String? contentType = 'audio/wav',
-    FFUploadedFile? audio,
+    String? audio = '',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'Test 1',

@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_audio_player.dart';
@@ -30,6 +31,9 @@ class HomePageModel extends FlutterFlowModel {
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
   String uploadedFileUrl = '';
+
+  // Stores action output result for [Backend Call - API (Test 1)] action in Button widget.
+  ApiCallResponse? apiResultp1y;
 
   /// Initialization and disposal methods.
 
