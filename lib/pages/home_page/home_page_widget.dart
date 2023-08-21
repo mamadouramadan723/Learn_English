@@ -306,7 +306,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'file : ${_model.uploadedLocalFile.blurHash}',
+                                            'file : ${_model.uploadedLocalFile.blurHash}size : ${'${_model.uploadedLocalFile.height.toString()} - ${_model.uploadedLocalFile.width.toString()}'}',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
